@@ -1,0 +1,35 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      java: corretto8
+    commands:
+      - echo "Installing dependencies phase"
+      - mvn --version
+
+  pre_build:
+    commands:
+      - echo "Pre-build phase started"
+      - echo "Running basic validations"
+      - ls -la
+      - echo "Checking environment variables"
+      - env | sort | head -n 10
+
+  build:
+    commands:
+      - echo "Build started on $(date)"
+      - mvn clean compile
+      - echo "Compilation completed"
+
+  post_build:
+    commands:
+      - echo "Post-build phase started on $(date)"
+      - mvn package
+      - echo "Build and packaging completed"
+
+artifacts:
+  files:
+    - target/*.war
+  discard-paths: no
+
